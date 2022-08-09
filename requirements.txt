@@ -43,7 +43,7 @@ multidict==6.0.2
 numpy==1.23.1
 packaging==21.3
 pandas==1.4.3
-Pint==0.17
+Pint==0.19.2
 plotly==5.9.0
 pycparser==2.21
 pyparsing==3.0.9
