@@ -1,0 +1,64 @@
+name: generate stations.txt
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ ]
+  schedule:
+    - cron: "5 7 2 * *" # on the second day of the month
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+  repository_dispatch: # run workflow on api request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: clone this repo
+        run: git clone https://github.com/${{ github.repository }}.git twfg-stations
+      
+      - name: update packages
+        run: sudo apt-get update && sudo apt-get upgrade
+      
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+    
+      - name: install virtualenv
+        run: pip install virtualenv
+      
+      - name: init virtualenv
+        run: virtualenv venv
+      
+      - name: activate virtualenv
+        run: source venv/bin/activate
+
+      - name: upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: list directory contents
+        run: ls -lisha
+
+      - name: install pip dependencies
+        run: pip install -r twfg-stations/requirements.txt
+
+      - name: download and compare stations
+        run: python twfg-stations/__init__.py
+      
+      - name: list directory contents
+        run: ls -lisha
+      
+      - name: archive generated json files
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: generated-json
+          path: |
+            *.json
+      
