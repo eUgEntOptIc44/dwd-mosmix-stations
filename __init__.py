@@ -12,7 +12,7 @@ twfg_req = requests.get('https://tinyweatherforecastgermanygroup.gitlab.io/index
 if twfg_req.ok:
     twfg_req = twfg_req.json()
 else:
-    print(f"ERROR: failed to download twfg-stations.json -> server returned unexpected status code '{twfg_req.status_code}' ")
+    print(f"ERROR: failed to download 'twfg-stations.json' -> server returned unexpected status code '{twfg_req.status_code}' ")
     sys.exit(1)
 
 with open('twfg-stations.json', 'w+', encoding='utf-8') as fh:
@@ -33,26 +33,34 @@ stations_list = []
 station_names = list(stations_df['name'])
 
 for row_index, stations_row in stations_df.iterrows():
+    station_to_dt = str(stations_row['to_date'])
+    if station_to_dt != 'NaT': #TODO: double check this with wetterdienst docs
+        print(f"WARNING: station '{stations_row['name']}' ({stations_row['station_id']}) -> to_date: {station_to_dt} ")
+
     stations_list.append({
         'id':stations_row['station_id'],
         'name':stations_row['name'],
         'latitude':stations_row['latitude'],
-        'longitude':stations_row['longitude']
+        'longitude':stations_row['longitude'],
+        'altitude':stations_row['height']
     })
 
     # if stations_row['name'] not in station_names_old:
     #     print(stations_row['name'])
 
-print(f"DEBUG: retrieved {len(stations_list)} stations via wetterdienst")
+print(f"DEBUG: retrieved {len(stations_list)} MOSMIX stations via wetterdienst")
 with open('stations.json', 'w+', encoding='utf-8') as fh:
     fh.write(str(json.dumps(stations_list, indent=4)))
 
 print(f"DEBUG: new station(s):")
-pprint(set(station_names) - set(station_names_old)) # new stations
+new_stations_names = list(set(station_names) - set(station_names_old))
+pprint(new_stations_names)
 
 print(f"DEBUG: deprecated or removed station(s):")
-pprint(set(station_names_old) - set(station_names)) # deprecated/removed stations
+old_stations_names = list(set(station_names_old) - set(station_names))
+pprint(old_stations_names)
 
+with open('stations-report.json', 'w+', encoding='utf-8') as fh:
+    fh.write(str(json.dumps({'new':new_stations_names,'old':old_stations_names}, indent=4)))
 
-
-
+print("done")
