@@ -69,7 +69,7 @@ tzdata==2022.1
 tzlocal==4.2
 urllib3==1.26.11
 validators==0.18.2
-Werkzeug==2.0.0
+Werkzeug==2.2.2
 wetterdienst==0.41.1
 yarl==1.8.1
 zipp==3.8.1
