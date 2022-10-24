@@ -56,7 +56,7 @@ jobs:
         run: ls -lisha
       
       - name: archive generated json files
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: generated-json
           path: |
