@@ -52,13 +52,37 @@ jobs:
       - name: download and compare stations
         run: python twfg-stations/__init__.py
       
+      - name: copy stations-report.json to github repo directory
+        run: cp stations-report.json twfg-stations/ || true
+
+      - name: write lastmod.txt file
+        run: echo $(date +%Y-%m-%d_%H:%M) > twfg-stations/lastmod.txt || true
+
       - name: list directory contents
         run: ls -lisha
       
+      - name: return directory size
+        run: du -sh
+
       - name: archive generated json files
         uses: actions/upload-artifact@v3.1.1
         with:
           name: generated-json
           path: |
             *.json
+
+      - name: git push to origin
+        run: |
+          cd twfg-stations
+          git config --local user.name twfgcicdbot
+          git config --local user.email twfgcicdbot@outlook.com
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git fetch --all
+          git checkout main
+          git reset
+          git add lastmod.txt
+          git add stations-report.json
+          git status
+          git commit -m "update stations-report.json" || true
+          git push -f origin main || true
       
