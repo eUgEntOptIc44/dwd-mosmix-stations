@@ -1,5 +1,7 @@
 # DWD Mosmix stations
 
+**IMPORTANT**: This workflow currently returns invalid results due to a upstream change.
+
 A python script to create the [`stations-report.json`](https://eugentoptic44.github.io/dwd-mosmix-stations/stations-report.json) file for [`Tiny Weather Forecast Germany`](https://codeberg.org/Starfish/TinyWeatherForecastGermany) to identifiy modifications of the Mosmix weather stations  used by Deutscher Wetterdienst (DWD).
 
 ## stations-report.json
