@@ -4,3 +4,4 @@ vscode:
   extensions:
     - ms-python.python
     - eamodio.gitlens
+    - charliermarsh.ruff
