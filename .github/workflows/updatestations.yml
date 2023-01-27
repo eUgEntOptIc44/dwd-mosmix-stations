@@ -1,4 +1,4 @@
-name: generate stations.txt
+name: generate stations report
 
 # Controls when the workflow will run
 on:
@@ -29,7 +29,8 @@ jobs:
       - name: Setup Python 3.x
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.x
+          token: ${{ secrets.GITHUB_TOKEN }}
     
       - name: install virtualenv
         run: pip install virtualenv
