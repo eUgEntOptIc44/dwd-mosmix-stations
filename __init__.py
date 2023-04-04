@@ -6,7 +6,7 @@ import sys
 import requests
 
 from wetterdienst import Wetterdienst # , Resolution, Period
-from wetterdienst.provider.dwd.mosmix import DwdMosmixType
+from wetterdienst.provider.dwd.mosmix import DwdMosmixRequest, DwdMosmixType
 
 twfg_req = requests.get('https://tinyweatherforecastgermanygroup.gitlab.io/index/'
                         'twfg-stations.json',
@@ -28,8 +28,7 @@ station_names_old = []
 for stations_dict in twfg_req:
     station_names_old.append(stations_dict['name'])
 
-API = Wetterdienst(provider="dwd", network="mosmix")
-stations = API(parameter="small", mosmix_type=DwdMosmixType.LARGE)
+stations = DwdMosmixRequest(parameter="large", mosmix_type=DwdMosmixType.LARGE)
 stations_df = stations.all().df
 stations_list = []
 
