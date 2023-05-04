@@ -1,3 +1,3 @@
-regex==2023.3.23
+regex==2023.5.5
 requests==2.29.0
 wetterdienst==0.55.1
