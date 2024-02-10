@@ -66,7 +66,7 @@ jobs:
         run: du -sh
 
       - name: archive generated json files
-        uses: actions/upload-artifact@v4.3.0
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: generated-json
           path: |
